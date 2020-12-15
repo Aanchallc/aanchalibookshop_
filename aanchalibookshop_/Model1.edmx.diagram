@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="59ed4fbdb6eb49db960352f5c82ec4a7" Name="Diagram1">
+        <EntityTypeShape EntityType="aanchalbookshop_Model.category" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="aanchalbookshop_Model.order" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="aanchalbookshop_Model.orderdetail" Width="1.5" PointX="5.25" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="aanchalbookshop_Model.productdetail" Width="1.5" PointX="3" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="aanchalbookshop_Model.productimage" Width="1.5" PointX="5.25" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="aanchalbookshop_Model.userdetail" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
+        <AssociationConnector Association="aanchalbookshop_Model.FK_productdetail_category" ManuallyRouted="false" />
+        <AssociationConnector Association="aanchalbookshop_Model.FK_order_userdetail" ManuallyRouted="false" />
+        <AssociationConnector Association="aanchalbookshop_Model.FK_orderdetail_order" ManuallyRouted="false" />
+        <AssociationConnector Association="aanchalbookshop_Model.FK_orderdetail_productdetail" ManuallyRouted="false" />
+        <AssociationConnector Association="aanchalbookshop_Model.FK_productimage_productdetail" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

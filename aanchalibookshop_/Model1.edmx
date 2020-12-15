@@ -1,0 +1,408 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="aanchalbookshop_Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="category">
+          <Key>
+            <PropertyRef Name="cat_id" />
+          </Key>
+          <Property Name="cat_id" Type="int" Nullable="false" />
+          <Property Name="cat_name" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="order">
+          <Key>
+            <PropertyRef Name="or_id" />
+          </Key>
+          <Property Name="or_id" Type="int" Nullable="false" />
+          <Property Name="or_date" Type="datetime" />
+          <Property Name="or_address" Type="varchar(max)" Nullable="false" />
+          <Property Name="or_phone" Type="varchar(max)" />
+          <Property Name="or_total" Type="money" Nullable="false" />
+          <Property Name="or_status" Type="varchar(max)" />
+          <Property Name="p_id" Type="int" />
+          <Property Name="u_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="orderdetail">
+          <Key>
+            <PropertyRef Name="detail_id" />
+          </Key>
+          <Property Name="detail_id" Type="int" Nullable="false" />
+          <Property Name="or_id" Type="int" />
+          <Property Name="p_id" Type="int" Nullable="false" />
+          <Property Name="p_qty" Type="int" Nullable="false" />
+          <Property Name="p_price" Type="money" Nullable="false" />
+          <Property Name="p_total" Type="money" />
+        </EntityType>
+        <EntityType Name="productdetail">
+          <Key>
+            <PropertyRef Name="p_id" />
+          </Key>
+          <Property Name="p_id" Type="int" Nullable="false" />
+          <Property Name="p_name" Type="varchar(max)" Nullable="false" />
+          <Property Name="p_price" Type="money" Nullable="false" />
+          <Property Name="p_qty" Type="int" Nullable="false" />
+          <Property Name="p_detail" Type="varchar(max)" Nullable="false" />
+          <Property Name="cat_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="productimage">
+          <Key>
+            <PropertyRef Name="image_id" />
+          </Key>
+          <Property Name="image_id" Type="int" Nullable="false" />
+          <Property Name="p_id" Type="int" />
+        </EntityType>
+        <EntityType Name="userdetail">
+          <Key>
+            <PropertyRef Name="u_id" />
+          </Key>
+          <Property Name="u_id" Type="int" Nullable="false" />
+          <Property Name="u_name" Type="varchar" MaxLength="50" />
+          <Property Name="u_password" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="u_type" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <Association Name="FK_order_userdetail">
+          <End Role="userdetail" Type="Self.userdetail" Multiplicity="1" />
+          <End Role="order" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="userdetail">
+              <PropertyRef Name="u_id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="u_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_orderdetail_order">
+          <End Role="order" Type="Self.order" Multiplicity="0..1" />
+          <End Role="orderdetail" Type="Self.orderdetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="or_id" />
+            </Principal>
+            <Dependent Role="orderdetail">
+              <PropertyRef Name="or_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_orderdetail_productdetail">
+          <End Role="productdetail" Type="Self.productdetail" Multiplicity="1" />
+          <End Role="orderdetail" Type="Self.orderdetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productdetail">
+              <PropertyRef Name="p_id" />
+            </Principal>
+            <Dependent Role="orderdetail">
+              <PropertyRef Name="p_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_productdetail_category">
+          <End Role="category" Type="Self.category" Multiplicity="1" />
+          <End Role="productdetail" Type="Self.productdetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="productdetail">
+              <PropertyRef Name="cat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_productimage_productdetail">
+          <End Role="productdetail" Type="Self.productdetail" Multiplicity="0..1" />
+          <End Role="productimage" Type="Self.productimage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productdetail">
+              <PropertyRef Name="p_id" />
+            </Principal>
+            <Dependent Role="productimage">
+              <PropertyRef Name="p_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="aanchalbookshop_ModelStoreContainer">
+          <EntitySet Name="category" EntityType="Self.category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="order" EntityType="Self.order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="orderdetail" EntityType="Self.orderdetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="productdetail" EntityType="Self.productdetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="productimage" EntityType="Self.productimage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="userdetail" EntityType="Self.userdetail" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_order_userdetail" Association="Self.FK_order_userdetail">
+            <End Role="userdetail" EntitySet="userdetail" />
+            <End Role="order" EntitySet="order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_orderdetail_order" Association="Self.FK_orderdetail_order">
+            <End Role="order" EntitySet="order" />
+            <End Role="orderdetail" EntitySet="orderdetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_orderdetail_productdetail" Association="Self.FK_orderdetail_productdetail">
+            <End Role="productdetail" EntitySet="productdetail" />
+            <End Role="orderdetail" EntitySet="orderdetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_productdetail_category" Association="Self.FK_productdetail_category">
+            <End Role="category" EntitySet="category" />
+            <End Role="productdetail" EntitySet="productdetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_productimage_productdetail" Association="Self.FK_productimage_productdetail">
+            <End Role="productdetail" EntitySet="productdetail" />
+            <End Role="productimage" EntitySet="productimage" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="aanchalbookshop_Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="category">
+          <Key>
+            <PropertyRef Name="cat_id" />
+          </Key>
+          <Property Name="cat_id" Type="Int32" Nullable="false" />
+          <Property Name="cat_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="productdetails" Relationship="Self.FK_productdetail_category" FromRole="category" ToRole="productdetail" />
+        </EntityType>
+        <EntityType Name="order">
+          <Key>
+            <PropertyRef Name="or_id" />
+          </Key>
+          <Property Name="or_id" Type="Int32" Nullable="false" />
+          <Property Name="or_date" Type="DateTime" Precision="3" />
+          <Property Name="or_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="or_phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="or_total" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="or_status" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="p_id" Type="Int32" />
+          <Property Name="u_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="userdetail" Relationship="Self.FK_order_userdetail" FromRole="order" ToRole="userdetail" />
+          <NavigationProperty Name="orderdetails" Relationship="Self.FK_orderdetail_order" FromRole="order" ToRole="orderdetail" />
+        </EntityType>
+        <EntityType Name="orderdetail">
+          <Key>
+            <PropertyRef Name="detail_id" />
+          </Key>
+          <Property Name="detail_id" Type="Int32" Nullable="false" />
+          <Property Name="or_id" Type="Int32" />
+          <Property Name="p_id" Type="Int32" Nullable="false" />
+          <Property Name="p_qty" Type="Int32" Nullable="false" />
+          <Property Name="p_price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="p_total" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="order" Relationship="Self.FK_orderdetail_order" FromRole="orderdetail" ToRole="order" />
+          <NavigationProperty Name="productdetail" Relationship="Self.FK_orderdetail_productdetail" FromRole="orderdetail" ToRole="productdetail" />
+        </EntityType>
+        <EntityType Name="productdetail">
+          <Key>
+            <PropertyRef Name="p_id" />
+          </Key>
+          <Property Name="p_id" Type="Int32" Nullable="false" />
+          <Property Name="p_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="p_price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="p_qty" Type="Int32" Nullable="false" />
+          <Property Name="p_detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="cat_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="category" Relationship="Self.FK_productdetail_category" FromRole="productdetail" ToRole="category" />
+          <NavigationProperty Name="orderdetails" Relationship="Self.FK_orderdetail_productdetail" FromRole="productdetail" ToRole="orderdetail" />
+          <NavigationProperty Name="productimages" Relationship="Self.FK_productimage_productdetail" FromRole="productdetail" ToRole="productimage" />
+        </EntityType>
+        <EntityType Name="productimage">
+          <Key>
+            <PropertyRef Name="image_id" />
+          </Key>
+          <Property Name="image_id" Type="Int32" Nullable="false" />
+          <Property Name="p_id" Type="Int32" />
+          <NavigationProperty Name="productdetail" Relationship="Self.FK_productimage_productdetail" FromRole="productimage" ToRole="productdetail" />
+        </EntityType>
+        <EntityType Name="userdetail">
+          <Key>
+            <PropertyRef Name="u_id" />
+          </Key>
+          <Property Name="u_id" Type="Int32" Nullable="false" />
+          <Property Name="u_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="u_password" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="u_type" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="orders" Relationship="Self.FK_order_userdetail" FromRole="userdetail" ToRole="order" />
+        </EntityType>
+        <Association Name="FK_productdetail_category">
+          <End Role="category" Type="Self.category" Multiplicity="1" />
+          <End Role="productdetail" Type="Self.productdetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="productdetail">
+              <PropertyRef Name="cat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_userdetail">
+          <End Role="userdetail" Type="Self.userdetail" Multiplicity="1" />
+          <End Role="order" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="userdetail">
+              <PropertyRef Name="u_id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="u_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_orderdetail_order">
+          <End Role="order" Type="Self.order" Multiplicity="0..1" />
+          <End Role="orderdetail" Type="Self.orderdetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="or_id" />
+            </Principal>
+            <Dependent Role="orderdetail">
+              <PropertyRef Name="or_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_orderdetail_productdetail">
+          <End Role="productdetail" Type="Self.productdetail" Multiplicity="1" />
+          <End Role="orderdetail" Type="Self.orderdetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productdetail">
+              <PropertyRef Name="p_id" />
+            </Principal>
+            <Dependent Role="orderdetail">
+              <PropertyRef Name="p_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_productimage_productdetail">
+          <End Role="productdetail" Type="Self.productdetail" Multiplicity="0..1" />
+          <End Role="productimage" Type="Self.productimage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productdetail">
+              <PropertyRef Name="p_id" />
+            </Principal>
+            <Dependent Role="productimage">
+              <PropertyRef Name="p_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="aanchalbookshop_Entities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="categories" EntityType="Self.category" />
+          <EntitySet Name="orders" EntityType="Self.order" />
+          <EntitySet Name="orderdetails" EntityType="Self.orderdetail" />
+          <EntitySet Name="productdetails" EntityType="Self.productdetail" />
+          <EntitySet Name="productimages" EntityType="Self.productimage" />
+          <EntitySet Name="userdetails" EntityType="Self.userdetail" />
+          <AssociationSet Name="FK_productdetail_category" Association="Self.FK_productdetail_category">
+            <End Role="category" EntitySet="categories" />
+            <End Role="productdetail" EntitySet="productdetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_userdetail" Association="Self.FK_order_userdetail">
+            <End Role="userdetail" EntitySet="userdetails" />
+            <End Role="order" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_orderdetail_order" Association="Self.FK_orderdetail_order">
+            <End Role="order" EntitySet="orders" />
+            <End Role="orderdetail" EntitySet="orderdetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_orderdetail_productdetail" Association="Self.FK_orderdetail_productdetail">
+            <End Role="productdetail" EntitySet="productdetails" />
+            <End Role="orderdetail" EntitySet="orderdetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_productimage_productdetail" Association="Self.FK_productimage_productdetail">
+            <End Role="productdetail" EntitySet="productdetails" />
+            <End Role="productimage" EntitySet="productimages" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="aanchalbookshop_ModelStoreContainer" CdmEntityContainer="aanchalbookshop_Entities1">
+          <EntitySetMapping Name="categories">
+            <EntityTypeMapping TypeName="aanchalbookshop_Model.category">
+              <MappingFragment StoreEntitySet="category">
+                <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+                <ScalarProperty Name="cat_name" ColumnName="cat_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="orders">
+            <EntityTypeMapping TypeName="aanchalbookshop_Model.order">
+              <MappingFragment StoreEntitySet="order">
+                <ScalarProperty Name="or_id" ColumnName="or_id" />
+                <ScalarProperty Name="or_date" ColumnName="or_date" />
+                <ScalarProperty Name="or_address" ColumnName="or_address" />
+                <ScalarProperty Name="or_phone" ColumnName="or_phone" />
+                <ScalarProperty Name="or_total" ColumnName="or_total" />
+                <ScalarProperty Name="or_status" ColumnName="or_status" />
+                <ScalarProperty Name="p_id" ColumnName="p_id" />
+                <ScalarProperty Name="u_id" ColumnName="u_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="orderdetails">
+            <EntityTypeMapping TypeName="aanchalbookshop_Model.orderdetail">
+              <MappingFragment StoreEntitySet="orderdetail">
+                <ScalarProperty Name="detail_id" ColumnName="detail_id" />
+                <ScalarProperty Name="or_id" ColumnName="or_id" />
+                <ScalarProperty Name="p_id" ColumnName="p_id" />
+                <ScalarProperty Name="p_qty" ColumnName="p_qty" />
+                <ScalarProperty Name="p_price" ColumnName="p_price" />
+                <ScalarProperty Name="p_total" ColumnName="p_total" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="productdetails">
+            <EntityTypeMapping TypeName="aanchalbookshop_Model.productdetail">
+              <MappingFragment StoreEntitySet="productdetail">
+                <ScalarProperty Name="p_id" ColumnName="p_id" />
+                <ScalarProperty Name="p_name" ColumnName="p_name" />
+                <ScalarProperty Name="p_price" ColumnName="p_price" />
+                <ScalarProperty Name="p_qty" ColumnName="p_qty" />
+                <ScalarProperty Name="p_detail" ColumnName="p_detail" />
+                <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="productimages">
+            <EntityTypeMapping TypeName="aanchalbookshop_Model.productimage">
+              <MappingFragment StoreEntitySet="productimage">
+                <ScalarProperty Name="image_id" ColumnName="image_id" />
+                <ScalarProperty Name="p_id" ColumnName="p_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="userdetails">
+            <EntityTypeMapping TypeName="aanchalbookshop_Model.userdetail">
+              <MappingFragment StoreEntitySet="userdetail">
+                <ScalarProperty Name="u_id" ColumnName="u_id" />
+                <ScalarProperty Name="u_name" ColumnName="u_name" />
+                <ScalarProperty Name="u_password" ColumnName="u_password" />
+                <ScalarProperty Name="u_type" ColumnName="u_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
